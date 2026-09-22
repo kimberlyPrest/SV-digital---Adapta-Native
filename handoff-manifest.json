@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "adapta-cliente-handoff/v1",
+  "phase": 1,
+  "versions": {
+    "package": "0.9.5",
+    "adapta": "0.9.5",
+    "adaptaCliente": "0.9.5"
+  },
+  "generatedAt": "2026-09-22T00:00:00.000Z",
+  "files": [
+    {
+      "path": "04_fase-atual/fase.md",
+      "sha256": "3d768f47b7320a81fc205b6d2f33c23f9d8a6627e7ee163acb4bc8cd5cdf6179",
+      "classification": "fase-atual"
+    },
+    {
+      "path": "04_fase-atual/specs/spec-1-001-backend-supabase.md",
+      "sha256": "22bef39033d9746c3d5285c2b5854f99782b525f157f0ea628b18dd56075e1f5",
+      "classification": "spec-fase-atual"
+    },
+    {
+      "path": "04_fase-atual/specs/spec-1-002-modelo-comercial-e-importacao.md",
+      "sha256": "4cce611691eeade89864507fbbfbbba2dc475bf417a57d53beb90cb2d3db07f8",
+      "classification": "spec-fase-atual"
+    },
+    {
+      "path": "04_fase-atual/specs/spec-1-003-interface-e-painel-inicial.md",
+      "sha256": "15e77ec43ca6219be567ea6eb97d1bb4c6afb3a6e574312b20a779f69217af95",
+      "classification": "spec-fase-atual"
+    }
+  ]
+}
