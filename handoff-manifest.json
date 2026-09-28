@@ -6,26 +6,26 @@
     "adapta": "0.9.5",
     "adaptaCliente": "0.9.5"
   },
-  "generatedAt": "2026-09-22T00:00:00.000Z",
+  "generatedAt": "2026-09-28T00:00:00.000Z",
   "files": [
     {
       "path": "04_fase-atual/fase.md",
-      "sha256": "3d768f47b7320a81fc205b6d2f33c23f9d8a6627e7ee163acb4bc8cd5cdf6179",
+      "sha256": "00be19dc4b90e08e350dda57947e5310a75f4897c2d16ca85618cdc43a4d4278",
       "classification": "fase-atual"
     },
     {
       "path": "04_fase-atual/specs/spec-1-001-backend-supabase.md",
-      "sha256": "22bef39033d9746c3d5285c2b5854f99782b525f157f0ea628b18dd56075e1f5",
+      "sha256": "03762496554e89989b3e35a46c52f64d8bce94ceba2b7abc846ee42a891d83d5",
       "classification": "spec-fase-atual"
     },
     {
       "path": "04_fase-atual/specs/spec-1-002-modelo-comercial-e-importacao.md",
-      "sha256": "4cce611691eeade89864507fbbfbbba2dc475bf417a57d53beb90cb2d3db07f8",
+      "sha256": "0d7e3cecd1cf27b110c34accee56a75659225167bc7dc9fcd9d687bf3b3bcc5f",
       "classification": "spec-fase-atual"
     },
     {
       "path": "04_fase-atual/specs/spec-1-003-interface-e-painel-inicial.md",
-      "sha256": "15e77ec43ca6219be567ea6eb97d1bb4c6afb3a6e574312b20a779f69217af95",
+      "sha256": "b3713d4927a00b83cc2eba644b821061a68bd18787255a06a9aadddee0b310ec",
       "classification": "spec-fase-atual"
     }
   ]
