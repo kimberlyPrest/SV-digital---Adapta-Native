@@ -2,7 +2,7 @@
 
 | Fase | Origem no escopo | SPEC | Resultado e aceite | Tasks | Prova esperada | Status |
 |---:|---|---|---|---|---|---|
-| 1 | 4, 9, 10, 14 | SPEC-1-001 | Backend Supabase com CA-1-01 a CA-1-04 | F1-T01, F1-T02, F1-T03 | testes RLS, migrações e inventário de secrets | Planejado |
+| 1 | 4, 9, 10, 14 | SPEC-1-001 | Backend Supabase com CA-1-01 a CA-1-04 e CA-1-13 (matriz de permissões M1–M5) | F1-T01, F1-T02, F1-T03 | testes RLS, matriz de permissões provada por papel, migrações e inventário de secrets | Planejado |
 | 1 | 5, 8, 9 | SPEC-1-002 | ICP, modelo e importação com CA-1-05 a CA-1-08 | F1-T04, F1-T05, F1-T06 | relatório de importação e reconciliação | Planejado |
 | 1 | 2, 7, Fase 1 | SPEC-1-003 | Interface e painel com CA-1-09 a CA-1-12 | F1-T07, F1-T08, F1-T09 | URL, capturas e roteiro do Champion | Planejado |
 | 2 | 5, 7.2, 7.3 | SPEC-2-001 | Pesquisa e proveniência com CA-2-01 a CA-2-04 | F2-T01, F2-T02, F2-T03 | jobs, evidências e teste de fonte | Planejado |

@@ -24,6 +24,7 @@ O Champion demonstra no Skip o cadastro do ICP, a revisão de uma conta, a corre
 - **Entradas:** APIs e RLS das SPECs anteriores.
 - **Saídas:** aplicação publicada em ambiente de homologação e roteiro de demonstração.
 - **Permissões:** líder edita ICP; prospector edita registros; vendedor leitura; leitor somente painéis.
+- **Permissões aplicáveis (fatia da matriz M1–M5 da SPEC-1-001):** a navegação e os controles de cada tela seguem a matriz canônica — `admin` gerencia usuários e configurações; `lider_comercial` publica ICP, aprova lotes e opera fila de correção; `prospector` importa, revisa e corrige registros; `vendedor` lê contas/coortes sem dados de contato direto; `leitor` vê apenas painéis e indicadores. Ações sem permissão são ocultadas ou desabilitadas **e** continuam negadas server-side (RN-142).
 - **Superfícies:** projeto Skip e cliente Supabase público.
 - **Risco e plano B:** limitação de componente no Skip; usar componente simples preservando contrato e acessibilidade.
 - **Rollback:** republicar versão anterior do app; dados permanecem no Supabase.
@@ -39,6 +40,7 @@ O Champion demonstra no Skip o cadastro do ICP, a revisão de uma conta, a corre
 | RN-141 | indicador calculado | mostrar valor, janela e cobertura | cobertura ausente impede interpretação como zero | Escopo 2.2 |
 | RN-142 | ação sem permissão | ocultar ou desabilitar e manter proteção server-side | nenhuma | Escopo 14.1 |
 | RN-143 | registro incompleto | aparecer na fila de correção | importado não reconciliado fica separado | Escopo Fase 1 |
+| RN-144 | papel sem acesso a uma tela ou dado (conforme matriz M1–M5) | tela/dado não é renderizado e a API continua negando o acesso | nenhuma | Matriz M1–M5 (SPEC-1-001) |
 
 ## Fluxo e regras
 
@@ -48,7 +50,7 @@ O Champion demonstra no Skip o cadastro do ICP, a revisão de uma conta, a corre
 4. Abre o painel e filtra período, origem, coorte e responsável.
 5. Sai e a sessão é invalidada conforme configuração.
 
-| Cenário | Condição | Resultado | Recuperação |
+| Cenário | Condição | Resultado esperado | Recuperação |
 |---|---|---|---|
 | Principal | líder autenticado | telas e ações administrativas disponíveis | não aplicável |
 | Limite | base sem dados | estados vazios explicam a próxima ação | importar ou criar registro |
@@ -74,7 +76,7 @@ O Champion demonstra no Skip o cadastro do ICP, a revisão de uma conta, a corre
 
 ## Critérios de aceite
 
-- [ ] **CA-1-09:** cada papel vê somente telas e ações autorizadas.
+- [ ] **CA-1-09:** cada papel vê somente telas e ações autorizadas **conforme a matriz de permissões M1–M5 da SPEC-1-001**, e a tentativa direta pela API de uma ação proibida ao papel é negada (a ocultação no frontend não é prova suficiente).
 - [ ] **CA-1-10:** o Champion completa o roteiro sem editar diretamente o banco.
 - [ ] **CA-1-11:** painel diferencia zero, dado ausente e dado incompleto.
 - [ ] **CA-1-12:** erro de rede ou sessão não produz mutação parcial.
@@ -89,7 +91,8 @@ O Champion demonstra no Skip o cadastro do ICP, a revisão de uma conta, a corre
 
 **Fixtures:** usuários por papel e base importada da SPEC-1-002.  
 **Erros obrigatórios:** 401, 403, timeout, lista vazia e validação de formulário.  
-**Evidência:** URL de homologação, capturas e checklist assinado.
+**Evidência:** URL de homologação, capturas e checklist assinado.  
+**Prova por papel:** o roteiro da demonstração deve percorrer os 5 papéis da matriz M1–M5, incluindo para cada um ao menos uma ação permitida e uma proibida (ex.: leitor tentando abrir contato com telefone; vendedor tentando importar base).
 
 ## Handoff e operação
 
@@ -110,4 +113,4 @@ O Champion demonstra no Skip o cadastro do ICP, a revisão de uma conta, a corre
 
 | Data | Origem do sinal | Micro-spec/task | Motivo |
 |---|---|---|---|
-| | | | |
+| 2026-09-28 | Consultora (Kim) — lacuna detectada na revisão | Fatia de permissões M1–M5 + RN-144 + CA-1-09 reescrito | Interface precisava referenciar a matriz canônica e exigir prova server-side, não só ocultação no frontend |

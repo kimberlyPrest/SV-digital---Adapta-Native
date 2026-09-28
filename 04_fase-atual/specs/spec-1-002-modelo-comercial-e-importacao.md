@@ -24,6 +24,7 @@ A SV importa a base de referência, vê duplicidades e lacunas, cria a versão i
 - **Entradas:** exportação da base, taxonomia aprovada e usuários da SPEC-1-001.
 - **Saídas:** migrações, importador, mapeamento de colunas, relatório de erros e base reconciliada.
 - **Atores:** liderança configura; prospector importa/revisa; vendedor lê handoffs futuros.
+- **Permissões aplicáveis (fatia da matriz M2/M4 da SPEC-1-001):** publicar e desativar versão de ICP é exclusivo de `lider_comercial`; executar importação e revisar prévia cabem a `prospector` e `lider_comercial`; invalidar lote e liberar base para contato são exclusivos de `lider_comercial`; `vendedor` e `leitor` apenas leem registros comerciais, e `leitor` não vê dados de contato direto.
 - **Superfícies:** tabelas Supabase, Edge Function `import-commercial-base` e telas de importação no Skip.
 - **Risco e plano B:** exportação incompleta; manter lote como `importado_nao_reconciliado` e não liberar contato.
 - **Rollback:** importação usa `batch_id`; lote pode ser invalidado sem apagar auditoria.
@@ -41,6 +42,7 @@ A SV importa a base de referência, vê duplicidades e lacunas, cria a versão i
 | RN-122 | CNPJ normalizado igual | sugerir mesma conta | grupo econômico pode manter contas distintas com justificativa | Escopo 7.5 |
 | RN-123 | contato sem fonte/data | estado `pesquisa_necessaria` | dado fornecido diretamente pela pessoa registra essa origem | Escopo 5.3 |
 | RN-124 | versão de ICP publicada | torna-se imutável | correção gera nova versão | Escopo 7.1 |
+| RN-125 | usuário sem papel `lider_comercial` tenta publicar ICP, invalidar lote ou liberar base | operação negada e auditada | nenhuma | Matriz M2/M4 (SPEC-1-001) |
 
 ## Fluxo e regras
 
@@ -62,7 +64,7 @@ A SV importa a base de referência, vê duplicidades e lacunas, cria a versão i
 2. Alterar somente modelo comercial e importador.
 3. Não decidir pesos do ICP nem corrigir dados do cliente por inferência.
 4. Criar testes → migrações → importador → relatório → demonstração.
-5. Parar se a taxonomia ou o arquivo real contradizer o escopo.
+5. Parar se a taxonomia ou o arquivo real contradisser o escopo.
 6. Manter lote inválido isolado e reversível.
 
 ## Checklist de execução
@@ -90,7 +92,7 @@ A SV importa a base de referência, vê duplicidades e lacunas, cria a versão i
 | REFACTOR/REGRESSÃO | formatos de telefone/CNPJ e versão de ICP | suíte de bordas | normalização sem fusão indevida | relatório de regressão |
 
 **Fixtures:** base mínima com 12 contas, duplicatas, CNPJ ausente, contato sem fonte e etapas legadas.  
-**Erros obrigatórios:** CSV inválido, coluna ausente, lote repetido e usuário sem permissão.  
+**Erros obrigatórios:** CSV inválido, coluna ausente, lote repetido e usuário sem permissão (prospector tentando invalidar lote ou publicar ICP — RN-125).  
 **Evidência:** relatório de importação e consultas de consistência.
 
 ## Handoff e operação
@@ -112,4 +114,4 @@ A SV importa a base de referência, vê duplicidades e lacunas, cria a versão i
 
 | Data | Origem do sinal | Micro-spec/task | Motivo |
 |---|---|---|---|
-| | | | |
+| 2026-09-28 | Consultora (Kim) — lacuna detectada na revisão | Fatia de permissões M2/M4 + RN-125 | Publicação de ICP, invalidação de lote e liberação de base precisavam de dono explícito por papel na SPEC |
