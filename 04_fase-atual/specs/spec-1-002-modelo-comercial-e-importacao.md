@@ -64,7 +64,7 @@ A SV importa a base de referência, vê duplicidades e lacunas, cria a versão i
 2. Alterar somente modelo comercial e importador.
 3. Não decidir pesos do ICP nem corrigir dados do cliente por inferência.
 4. Criar testes → migrações → importador → relatório → demonstração.
-5. Parar se a taxonomia ou o arquivo real contradisser o escopo.
+5. Parar se a taxonomia ou o arquivo real contradizer o escopo.
 6. Manter lote inválido isolado e reversível.
 
 ## Checklist de execução
