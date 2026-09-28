@@ -50,7 +50,7 @@ O Champion demonstra no Skip o cadastro do ICP, a revisão de uma conta, a corre
 4. Abre o painel e filtra período, origem, coorte e responsável.
 5. Sai e a sessão é invalidada conforme configuração.
 
-| Cenário | Condição | Resultado esperado | Recuperação |
+| Cenário | Condição | Resultado | Recuperação |
 |---|---|---|---|
 | Principal | líder autenticado | telas e ações administrativas disponíveis | não aplicável |
 | Limite | base sem dados | estados vazios explicam a próxima ação | importar ou criar registro |
