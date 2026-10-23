@@ -7,8 +7,10 @@ O escopo combina Skip no frontend e Supabase como backend, com agente de IA supe
 ## Onde começar
 
 - `01_projeto/escopo-definitivo.md`: escopo aprovado e decisões de arquitetura.
-- `04_fase-atual/fase.md`: tasks executáveis da Fase 1.
-- `04_fase-atual/specs/`: SPECs técnicas e de negócio da Fase 1.
+- `04_fase-atual/fase.md`: tasks executáveis da Fase 2.
+- `04_fase-atual/specs/`: SPECs técnicas e de negócio da Fase 2.
+- `05_entregas/fase-1/`: pacote encerrado da Fase 1.
+- `05_entregas/sv-digital-app`: implementação Skip (submódulo).
 - `01_projeto/matriz-de-rastreabilidade.md`: relação entre escopo, SPECs e tasks.
 
 Este repositório não contém credenciais, dados reais de clientes ou materiais internos da metodologia.

@@ -1,31 +1,36 @@
 {
   "schemaVersion": "adapta-cliente-handoff/v1",
-  "phase": 1,
+  "phase": 2,
   "versions": {
     "package": "0.9.5",
     "adapta": "0.9.5",
     "adaptaCliente": "0.9.5"
   },
-  "generatedAt": "2026-09-28T00:00:00.000Z",
+  "generatedAt": "2026-10-23T17:44:00.715Z",
   "files": [
     {
       "path": "04_fase-atual/fase.md",
-      "sha256": "00be19dc4b90e08e350dda57947e5310a75f4897c2d16ca85618cdc43a4d4278",
+      "sha256": "0c921122847c77d1024b2ad6042cd9d6696f808e0053c25d9ca84df62511eaa3",
       "classification": "fase-atual"
     },
     {
-      "path": "04_fase-atual/specs/spec-1-001-backend-supabase.md",
-      "sha256": "03762496554e89989b3e35a46c52f64d8bce94ceba2b7abc846ee42a891d83d5",
+      "path": "04_fase-atual/specs/spec-2-000-alinhamento-de-permissoes.md",
+      "sha256": "cb547f5ca0e1a4d3514f95bbfcbbebefc9025506528de533440713a11b735a9d",
       "classification": "spec-fase-atual"
     },
     {
-      "path": "04_fase-atual/specs/spec-1-002-modelo-comercial-e-importacao.md",
-      "sha256": "0d7e3cecd1cf27b110c34accee56a75659225167bc7dc9fcd9d687bf3b3bcc5f",
+      "path": "04_fase-atual/specs/spec-2-001-pesquisa-e-enriquecimento.md",
+      "sha256": "771a445ca2df71f49f7ece1440f221e1696c9384b2d3262b59555783f3ce7918",
       "classification": "spec-fase-atual"
     },
     {
-      "path": "04_fase-atual/specs/spec-1-003-interface-e-painel-inicial.md",
-      "sha256": "b3713d4927a00b83cc2eba644b821061a68bd18787255a06a9aadddee0b310ec",
+      "path": "04_fase-atual/specs/spec-2-002-scoring-explicavel.md",
+      "sha256": "df018f9d88c64dec8e0309d5824f6a0b5b7addfd4d83fddccaf3216c75b5c3c6",
+      "classification": "spec-fase-atual"
+    },
+    {
+      "path": "04_fase-atual/specs/spec-2-003-coortes-e-listas.md",
+      "sha256": "2b32443afebd0d251594676c81272eec3d6b84d5de0e94a7a4d9feabeb9b28bd",
       "classification": "spec-fase-atual"
     }
   ]

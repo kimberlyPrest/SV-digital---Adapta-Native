@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "adapta-phase-closure/v1",
+  "phase": 1,
+  "closedAt": "2026-10-23T17:44:00.715Z",
+  "activeDigest": "244b87f50dfa069dcf7995dcd46f12098554f9352b27e5caa7add27cc262ed84",
+  "files": [
+    {
+      "relative": "fase.md",
+      "sha256": "00be19dc4b90e08e350dda57947e5310a75f4897c2d16ca85618cdc43a4d4278"
+    },
+    {
+      "relative": "specs/spec-1-001-backend-supabase.md",
+      "sha256": "03762496554e89989b3e35a46c52f64d8bce94ceba2b7abc846ee42a891d83d5"
+    },
+    {
+      "relative": "specs/spec-1-002-modelo-comercial-e-importacao.md",
+      "sha256": "0d7e3cecd1cf27b110c34accee56a75659225167bc7dc9fcd9d687bf3b3bcc5f"
+    },
+    {
+      "relative": "specs/spec-1-003-interface-e-painel-inicial.md",
+      "sha256": "b3713d4927a00b83cc2eba644b821061a68bd18787255a06a9aadddee0b310ec"
+    }
+  ],
+  "checkSha256": "9821555a46094a526fe12078723e1f7f47b4985a38b9336dabfc63211cf86530",
+  "manifestDrift": []
+}

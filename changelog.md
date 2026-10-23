@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-23
+
+- Fase 1 encerrada com ressalvas e arquivada em `05_entregas/fase-1/` com `phase-closure-manifest.json`.
+- Implementação Skip vinculada como submódulo em `05_entregas/sv-digital-app`.
+- Fase 2 liberada: SPEC-2-000 (alinhamento de permissões e matriz M6), SPEC-2-001 (pesquisa e proveniência), SPEC-2-002 (pontuação explicável) e SPEC-2-003 (coortes e aprovação), com tasks F2-T01 a F2-T10.
+- F2-T01 absorve as divergências de permissão da Fase 1: importação para `lider_comercial`, leitura de contatos sensíveis por `admin` e tela de usuários/memberships.
+- Matriz de rastreabilidade atualizada com SPEC-2-000, CA-2-13 a CA-2-15 e renumeração das tasks da Fase 2.
+
 ## 2026-09-28
 
 - Emenda às SPECs da Fase 1: criada a matriz de permissões por papel (M1–M5) na SPEC-1-001 como contrato canônico de autorização, com fatias aplicáveis nas SPEC-1-002 (RN-125) e SPEC-1-003 (RN-144).
