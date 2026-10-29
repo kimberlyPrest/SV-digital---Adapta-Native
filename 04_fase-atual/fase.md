@@ -1,16 +1,26 @@
 # Fase 2 — Inteligência de contas e construção de listas
 
+## Como esta fase anda
+
+- O agente constrói as tasks em sequência, uma por vez, sem pedir autorização nem teste entre elas. Os testes automáticos (RED → GREEN) ficam dentro de cada task e não pedem nada ao cliente.
+- O teste do cliente é um por SPEC, no fim dela, pelo roteiro curto da seção "Teste do cliente" da própria SPEC. O agente não espera esse teste para construir a SPEC seguinte, porque ela depende só do que já foi construído.
+- Arquivos de teste, fixtures, evidências e logs são do agente. O cliente nunca precisa abri-los nem entrar com usuário de teste.
+- Antes do fim de uma SPEC, o agente só para por dado ou acesso que só a SV tem, por ação de risco em dado real ou por falha que não consegue resolver sozinho.
+
 ## Tasks
 
-| ID | Task | Dono | SPEC | Subseção | Critério binário | Recorte da prova | Evidência esperada | Pré-condições | Ponto de parada | Status |
+| ID | Task | Dono | SPEC | Subseção | Critério binário | Recorte da prova | Evidência esperada | Pré-condições | Pronto quando | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
-| F2-T01 | Alinhar permissões do Skip à matriz e criar tela de usuários | Ethos | SPEC-2-000 | Matriz M6 e TDD da SPEC | CA-2-13 a CA-2-15 passam | RED → GREEN | log do teste de tabela e capturas por papel | implementação `f989db7` | `PODE` idêntico a M1–M6 e revogação efetiva | ☐ |
-| F2-T02 | Criar fixtures e testes RED de pesquisa e proveniência | Ethos | SPEC-2-001 | TDD da SPEC | RED falha em evidência, conflito e idempotência | RED | log RED e fixture | F2-T01 | testes descrevem regras sem implementá-las | ☐ |
-| F2-T03 | Implementar jobs evidências fila de pesquisa e telas | Ethos | SPEC-2-001 | Dados e integrações | CA-2-01 a CA-2-04 passam | GREEN | migrações, log e capturas | F2-T02 | pesquisa funcional em homologação com fonte simulada | ☐ |
-| F2-T04 | Pesquisar 20 contas reais do ICP em homologação | Prospector SV | SPEC-2-001 | Handoff e operação | 20 contas com evidências ou em pesquisa necessária | REGRESSÃO | relatório de pesquisa | F2-T03 e fonte autorizada | nenhum dado sem fonte exibido como verificado | ☐ |
-| F2-T05 | Criar fixtures e testes RED da pontuação | Ethos | SPEC-2-002 | TDD da SPEC | RED falha em componentes, versão e determinismo | RED | log RED e fixture | F2-T03 | testes descrevem a nota sem implementá-la | ☐ |
-| F2-T06 | Implementar pontuação explicável versionada | Ethos | SPEC-2-002 | Fluxo e regras | CA-2-05 a CA-2-08 passam | GREEN | migração, log e capturas | F2-T05 e pesos publicados | notas reproduzíveis e explicadas | ☐ |
-| F2-T07 | Calibrar a ordenação com 15 contas conhecidas | Liderança SV | SPEC-2-002 | Handoff e operação | divergências registradas e aceitas ou nova versão publicada | REGRESSÃO | relatório de calibração | F2-T06 e F2-T04 | calibração assinada sem ajuste silencioso | ☐ |
-| F2-T08 | Criar fixtures e testes RED de revisão e coortes | Ethos | SPEC-2-003 | TDD da SPEC | RED falha em duplicidade, motivo e coorte concorrente | RED | log RED e fixture | F2-T06 | testes descrevem regras sem implementá-las | ☐ |
-| F2-T09 | Implementar lista revisão coortes e exportação | Ethos | SPEC-2-003 | Fluxo e regras | CA-2-09 a CA-2-11 passam | GREEN | migrações, log, capturas e CSV | F2-T08 | revisão e coorte funcionais em homologação | ☐ |
-| F2-T10 | Aprovar a primeira coorte real com a liderança | Champion SV | SPEC-2-003 | Handoff e operação | CA-2-12 aprovado sem bypass | REGRESSÃO | aceite e CSV da coorte | F2-T09 e F2-T07 | resultado registrado sem corrigir durante a prova | ☐ |
+| F2-T01 | Alinhar permissões do Skip à matriz e entregar a tela de importação e a tela de usuários | Ethos | SPEC-2-000 | Matriz M6, emenda de 29/10 e TDD da SPEC | CA-2-13 a CA-2-15 passam | RED → GREEN | log do teste de tabela | implementação `f989db7` | `PODE` idêntico a M1–M6 e revogação efetiva | ☐ |
+| F2-T02 | Construir a pesquisa com proveniência: testes, jobs, evidências, fila de pesquisa e telas | Ethos | SPEC-2-001 | TDD, dados e integrações | CA-2-01 a CA-2-04 passam | RED → GREEN | migrações e log dos testes | F2-T01 | pesquisa funcional em homologação com a fonte simulada e as fontes públicas | ☐ |
+| F2-T03 | Construir a pontuação explicável versionada: testes, função e telas | Ethos | SPEC-2-002 | TDD, fluxo e regras | CA-2-05 a CA-2-08 passam | RED → GREEN | migração e log dos testes | F2-T02 | notas reproduzíveis e explicadas com os pesos das fixtures | ☐ |
+| F2-T04 | Construir lista, revisão, coortes e exportação: testes e telas | Ethos | SPEC-2-003 | TDD, fluxo e regras | CA-2-09 a CA-2-11 passam | RED → GREEN | migrações, log dos testes e CSV de teste | F2-T03 | revisão e coorte funcionais em homologação | ☐ |
+
+## Testes do cliente (um por SPEC)
+
+| SPEC | Quando | Quem | O que fazer | Aprovado quando |
+|---|---|---|---|---|
+| SPEC-2-000 | F2-T01 no ar | admin da SV | convidar um usuário, trocar o papel dele e revogar; abrir a importação logado como líder | os passos funcionam e o usuário revogado perde o acesso |
+| SPEC-2-001 | F2-T02 no ar | prospector da SV | pesquisar 20 contas reais do ICP | 20 contas com evidência ou em pesquisa necessária; nenhum dado sem fonte aparece como verificado |
+| SPEC-2-002 | F2-T03 no ar e teste da SPEC-2-001 feito | liderança da SV | passar ao agente os pesos do ICP v1 e conferir a ordem de 15 contas conhecidas | divergências registradas e aceitas, ou nova versão do ICP publicada |
+| SPEC-2-003 | F2-T04 no ar e teste da SPEC-2-002 feito | champion e liderança da SV | revisar e aprovar a primeira coorte real e exportar o CSV | CA-2-12 aprovado sem bypass |

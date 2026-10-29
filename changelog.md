@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-29
+
+- Fase 2 reorganizada para andar sem paradas por task: os testes RED entraram na mesma task da construção (10 tasks viraram 4: F2-T01 a F2-T04) e a validação com dados reais (20 contas, calibração com 15 contas e primeira coorte) virou o teste do cliente no fim de cada SPEC.
+- SPEC-2-000: decididas a tela de importação completa e a exibição dos contatos sensíveis para `admin` no detalhe da conta; a regressão por papel passou a ser automática, sem login do cliente com usuários de teste.
+- SPEC-2-001: construção com fonte simulada e fontes públicas autorizadas; a fonte contratada entra quando a SV liberar a credencial.
+- SPEC-2-002: construção com os pesos das fixtures; a liderança passa os pesos reais no teste da SPEC.
+- AGENTS.md: ritmo de execução e teste por SPEC.
+
 ## 2026-10-23
 
 - Fase 1 encerrada com ressalvas e arquivada em `05_entregas/fase-1/` com `phase-closure-manifest.json`.

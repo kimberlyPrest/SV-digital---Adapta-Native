@@ -11,6 +11,7 @@
 - **Estado atual:** a implementação Skip (`05_entregas/sv-digital-app`, commit `f989db7`) controla navegação pelo mapa `PODE` em `src/hooks/use-papel.tsx`. Três linhas divergem da matriz M1–M5: `lider_comercial` sem importação (M4 concede `C`), `admin` sem leitura de contatos sensíveis (M3 concede `R`) e a permissão `usuarios` sem tela de gestão de memberships (M1).
 - **Estado desejado:** `PODE` reproduz exatamente M1–M5 e a Fase 2 possui contrato de autorização (M6) para os recursos novos antes de implementá-los.
 - **Decisões já fechadas:** a matriz da SPEC-1-001 continua canônica; M6 é extensão, não substituição; ocultação na UI é primeira camada e a RLS continua negando server-side (CA-1-09).
+- **Decisões de 29/10 (emenda):** a tela de importação é a completa que a SPEC-1-002 descreve (CSV → prévia com duplicidades e lacunas → executar), aberta a `lider_comercial` e `prospector`; os contatos sensíveis aparecem para `admin` no detalhe da conta, dentro da tela Contas, só para leitura, sem tela nova.
 - **Bloqueios:** nenhum.
 
 ## Resultado observável
@@ -19,7 +20,7 @@ Cada papel vê exatamente as telas e ações que M1–M6 concedem; o `admin` con
 
 ## Limites e dependências
 
-- **Inclui:** correção do mapa `PODE`, tela de importação acessível a `lider_comercial` e `prospector`, exibição de contatos sensíveis para `admin`, tela de usuários/memberships e a matriz M6.
+- **Inclui:** correção do mapa `PODE`, tela de importação completa (CSV → prévia → executar) acessível a `lider_comercial` e `prospector`, contatos sensíveis para `admin` no detalhe da conta, tela de usuários/memberships e a matriz M6.
 - **Fora de escopo:** novas políticas RLS dos recursos da Fase 2 (entregues nas SPECs 2-001 a 2-003), SSO e multi-organização.
 - **Entradas:** matriz M1–M5 (SPEC-1-001), RPCs `my_role` e `revoke_member`, implementação `f989db7`.
 - **Saídas:** `PODE` corrigido com teste de tabela, tela de usuários, matriz M6 publicada nesta SPEC.
@@ -72,7 +73,7 @@ Mesmas convenções da SPEC-1-001 (`C`/`R`/`U`/`D`/`—`, deny by default, toda 
 1. Ethos escreve teste de tabela comparando `PODE` com M1–M6 e vê falhar nas três divergências.
 2. Corrige `PODE`, libera a tela de importação para `lider_comercial` e a leitura de contatos sensíveis para `admin`.
 3. Constrói a tela de usuários: listar memberships, convidar/atribuir papel e revogar.
-4. Champion percorre o roteiro com um usuário de cada papel.
+4. O agente prova cada papel pelo teste de tabela e pelas consultas server-side com as fixtures; o cliente faz só o teste da SPEC (seção "Teste do cliente").
 
 | Cenário | Condição | Resultado esperado | Recuperação |
 |---|---|---|---|
@@ -85,7 +86,7 @@ Mesmas convenções da SPEC-1-001 (`C`/`R`/`U`/`D`/`—`, deny by default, toda 
 1. Ler SPEC-1-001 (M1–M5) e esta SPEC (M6).
 2. Alterar somente `PODE`, rotas/telas de importação, contatos e usuários.
 3. Não criar permissão sem linha na matriz.
-4. Teste de tabela → correção → tela de usuários → roteiro por papel.
+4. Teste de tabela → correção → tela de importação → contatos no detalhe da conta → tela de usuários → regressão automática por papel.
 5. Parar se alguma RPC existente contradizer a matriz.
 
 ## Checklist de execução
@@ -108,11 +109,11 @@ Mesmas convenções da SPEC-1-001 (`C`/`R`/`U`/`D`/`—`, deny by default, toda 
 |---|---|---|---|---|
 | RED | teste de tabela `PODE` × matriz | rodar teste antes da correção | falha nas três divergências | log RED |
 | GREEN | mesmo teste + roteiro da tela de usuários | corrigir e construir tela | CA-2-13 a CA-2-15 passam | log e capturas |
-| REFACTOR/REGRESSÃO | roteiro por papel da Fase 1 | repetir F1-T09 com os 5 papéis | nenhuma regressão de navegação | capturas por papel |
+| REFACTOR/REGRESSÃO | regressão automática por papel | rodar o teste de tabela e as provas server-side dos 5 papéis com as fixtures | nenhuma regressão de navegação | log da regressão |
 
 **Fixtures:** cinco usuários de teste, um por papel, na organização da Fase 1.  
 **Erros obrigatórios:** não-admin na tela de usuários, papel inválido no convite, revogação repetida.  
-**Evidência:** log do teste de tabela e capturas por papel.
+**Evidência:** log do teste de tabela e da regressão por papel. As fixtures são só do agente: o cliente não entra com usuário de teste.
 
 ## Handoff e operação
 
@@ -120,6 +121,16 @@ Mesmas convenções da SPEC-1-001 (`C`/`R`/`U`/`D`/`—`, deny by default, toda 
 - **Como operar:** `admin` gerencia memberships pela tela de usuários.
 - **Como monitorar:** `audit_events` de convite, atribuição e revogação.
 - **Pendência conhecida:** envio de e-mail de convite depende da configuração SMTP do Supabase.
+
+## Teste do cliente (um só, no fim da SPEC)
+
+Pedido quando a F2-T01 estiver no ar, em um roteiro só, feito pelo admin da SV com usuários reais:
+
+1. Convidar um usuário, trocar o papel dele e revogar o acesso. O usuário revogado não entra mais.
+2. Abrir a tela de importação logado como líder e ver a prévia de um CSV pequeno, sem executar.
+3. Abrir uma conta e conferir que o admin vê telefone e e-mail do contato, sem botão de editar.
+
+Aprovado quando os três passos funcionam (CA-2-13 a CA-2-15).
 
 ## Tasks vinculadas
 
@@ -132,3 +143,4 @@ Mesmas convenções da SPEC-1-001 (`C`/`R`/`U`/`D`/`—`, deny by default, toda 
 | Data | Origem do sinal | Micro-spec/task | Motivo |
 |---|---|---|---|
 | 2026-10-23 | Fechamento da Fase 1 — revisão da implementação | SPEC-2-000, M6 e F2-T01 | Divergências do `PODE` com M1–M5 e recursos da Fase 2 sem dono por papel |
+| 2026-10-29 | Pergunta do agente na análise da F2-T01 | SPEC-2-000 | Tela de importação completa e contatos sensíveis no detalhe da conta; teste do cliente por SPEC, com regressão por papel automática |

@@ -62,7 +62,7 @@ O prospector dispara a pesquisa de um recorte do ICP, acompanha os jobs e vê em
 
 1. Ler escopo 4.3, 5, 7.2, 7.3, 10.2, SPEC-1-002 e SPEC-2-000 (M6).
 2. Alterar somente pesquisa, evidências e telas de pesquisa/detalhe.
-3. Não escolher fonte contratada nem ligar conector sem teste com credencial real aprovado pela SV.
+3. Não escolher fonte contratada nem ligar conector sem teste com credencial real aprovado pela SV. Construir com a fonte simulada e com as fontes públicas autorizadas no escopo (site institucional, base pública de CNPJ); a fonte contratada entra quando a SV liberar a credencial, sem travar a task.
 4. Testes → migrações e RLS (M6) → fila e Edge Function → telas → demonstração.
 5. Parar se a fonte exigir automação não autorizada.
 6. Nunca gravar dado inferido sem evidência.
@@ -89,11 +89,11 @@ O prospector dispara a pesquisa de um recorte do ICP, acompanha os jobs e vê em
 |---|---|---|---|---|
 | RED | fixture com fonte simulada (sucesso, conflito, timeout) | rodar testes do worker e de RLS | falham sem tabelas e regras | log RED |
 | GREEN | mesma fixture + repetição do job | testes Edge Function + `supabase test db` | CA-2-01 a CA-2-04 passam | log e consultas |
-| REFACTOR/REGRESSÃO | 20 contas reais do ICP com fonte autorizada | pesquisa em homologação | evidências rastreáveis, sem duplicação | relatório de pesquisa |
+| REFACTOR/REGRESSÃO | repetição de jobs e falhas da fonte simulada | reprocessar jobs e simular timeout | evidências rastreáveis, sem duplicação | log da regressão |
 
 **Fixtures:** 10 contas com respostas simuladas da fonte: completa, sem unidades, conflito de unidades, timeout e contato sem data.  
 **Erros obrigatórios:** timeout, resposta inválida, job repetido e `vendedor` tentando ler contato sensível.  
-**Evidência:** log dos testes e relatório das 20 contas reais.
+**Evidência:** log dos testes. As 20 contas reais são o teste do cliente desta SPEC.
 
 ## Handoff e operação
 
@@ -102,16 +102,24 @@ O prospector dispara a pesquisa de um recorte do ICP, acompanha os jobs e vê em
 - **Como monitorar:** jobs falhos, tamanho da fila de pesquisa necessária, cobertura de fonte por campo.
 - **Pendência conhecida:** fonte contratada depende de decisão e credencial da SV.
 
+## Teste do cliente (um só, no fim da SPEC)
+
+Pedido quando a F2-T02 estiver no ar, feito pelo prospector da SV:
+
+1. Disparar a pesquisa de 20 contas reais do ICP.
+2. Abrir três contas e conferir a fonte e a data de cada dado.
+3. Resolver um conflito ou uma conta da fila de pesquisa necessária.
+
+Aprovado quando as 20 contas têm evidência ou estão em pesquisa necessária e nenhum dado sem fonte aparece como verificado (CA-2-01 a CA-2-04).
+
 ## Tasks vinculadas
 
 | ID | Task | Dono | SPEC | Critério | Recorte da prova | Evidência esperada | Pré-condições | Status |
 |---|---|---|---|---|---|---|---|---|
-| F2-T02 | Criar fixtures e testes RED de pesquisa e proveniência | Ethos | SPEC-2-001 | RED falha em evidência, conflito e idempotência | RED | log RED e fixture | F2-T01 | ☐ |
-| F2-T03 | Implementar jobs evidências fila de pesquisa e telas | Ethos | SPEC-2-001 | CA-2-01 a CA-2-04 passam | GREEN | migrações, log e capturas | F2-T02 | ☐ |
-| F2-T04 | Pesquisar 20 contas reais do ICP em homologação | Prospector SV | SPEC-2-001 | 20 contas com evidências ou em pesquisa necessária | REGRESSÃO | relatório de pesquisa | F2-T03 e fonte autorizada | ☐ |
+| F2-T02 | Construir a pesquisa com proveniência: testes, jobs, evidências, fila de pesquisa e telas | Ethos | SPEC-2-001 | CA-2-01 a CA-2-04 passam | RED → GREEN | migrações e log dos testes | F2-T01 | ☐ |
 
 ## Emendas
 
 | Data | Origem do sinal | Micro-spec/task | Motivo |
 |---|---|---|---|
-| — | — | — | — |
+| 2026-10-29 | Fase 2 travando a cada task | SPEC-2-001 | Testes RED juntos com a construção numa task só; validação com dados reais vira o teste do cliente da SPEC; construção sem esperar dado da SV |

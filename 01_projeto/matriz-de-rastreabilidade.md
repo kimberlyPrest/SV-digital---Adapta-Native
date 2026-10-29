@@ -5,10 +5,10 @@
 | 1 | 4, 9, 10, 14 | SPEC-1-001 | Backend Supabase com CA-1-01 a CA-1-04 e CA-1-13 (matriz de permissões M1–M5) | F1-T01, F1-T02, F1-T03 | testes RLS, matriz de permissões provada por papel, migrações e inventário de secrets | Encerrado com ressalvas |
 | 1 | 5, 8, 9 | SPEC-1-002 | ICP, modelo e importação com CA-1-05 a CA-1-08 | F1-T04, F1-T05, F1-T06 | relatório de importação e reconciliação | Encerrado com ressalvas |
 | 1 | 2, 7, Fase 1 | SPEC-1-003 | Interface e painel com CA-1-09 a CA-1-12 | F1-T07, F1-T08, F1-T09 | URL, capturas e roteiro do Champion | Encerrado com ressalvas |
-| 2 | 3, 14.1, 15.7 | SPEC-2-000 | Permissões alinhadas a M1–M5 e extensão M6 com CA-2-13 a CA-2-15 | F2-T01 | teste de tabela PODE × matriz e capturas por papel | Planejado |
-| 2 | 5, 7.2, 7.3 | SPEC-2-001 | Pesquisa e proveniência com CA-2-01 a CA-2-04 | F2-T02, F2-T03, F2-T04 | jobs, evidências e teste de fonte | Planejado |
-| 2 | 5.2, 7.4, 8 | SPEC-2-002 | Score explicável com CA-2-05 a CA-2-08 | F2-T05, F2-T06, F2-T07 | score runs e regressão de versão | Planejado |
-| 2 | 7.5, 7.7, Fase 2 | SPEC-2-003 | Coorte aprovada com CA-2-09 a CA-2-12 | F2-T08, F2-T09, F2-T10 | export e aprovação da coorte | Planejado |
+| 2 | 3, 14.1, 15.7 | SPEC-2-000 | Permissões alinhadas a M1–M5 e extensão M6 com CA-2-13 a CA-2-15 | F2-T01 | teste de tabela PODE × matriz e teste do cliente da SPEC | Planejado |
+| 2 | 5, 7.2, 7.3 | SPEC-2-001 | Pesquisa e proveniência com CA-2-01 a CA-2-04 | F2-T02 | jobs, evidências e teste do cliente com 20 contas reais | Planejado |
+| 2 | 5.2, 7.4, 8 | SPEC-2-002 | Score explicável com CA-2-05 a CA-2-08 | F2-T03 | score runs, regressão de versão e calibração no teste do cliente | Planejado |
+| 2 | 7.5, 7.7, Fase 2 | SPEC-2-003 | Coorte aprovada com CA-2-09 a CA-2-12 | F2-T04 | export e aprovação da primeira coorte no teste do cliente | Planejado |
 | 3 | 7.14, 8.16–20, 10.3 | SPEC-3-001 | Transporte WhatsApp com CA-3-01 a CA-3-04 | F3-T01, F3-T02, F3-T03 | eventos, filas e teste do número | Planejado |
 | 3 | 7.9, 7.10, 7.14 | SPEC-3-002 | Agente e takeover com CA-3-05 a CA-3-08 | F3-T04, F3-T05, F3-T06 | corpus, replay e kill switch | Planejado |
 | 3 | 7.6–7.9, 8.4–8.9 | SPEC-3-003 | Cadência aprovada com CA-3-09 a CA-3-12 | F3-T07, F3-T08, F3-T09 | política, batch report e opt out | Planejado |

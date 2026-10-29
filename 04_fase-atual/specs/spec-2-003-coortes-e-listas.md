@@ -89,11 +89,11 @@ A liderança filtra a lista, vê duplicidades sinalizadas, decide conta a conta 
 |---|---|---|---|---|
 | RED | fixture com duplicados, conta em coorte ativa e decisões sem motivo | rodar testes de revisão e coorte | falham sem regras | log RED |
 | GREEN | mesma fixture + aprovação e exportação | testes + `supabase test db` | CA-2-09 a CA-2-11 passam | log e CSV |
-| REFACTOR/REGRESSÃO | primeira coorte real com a liderança | revisão e aprovação em homologação | CA-2-12 aprovado sem bypass | aceite e CSV da coorte |
+| REFACTOR/REGRESSÃO | bordas de revisão e exportação | duplicidade por domínio, conta impedida e exportação por papel não autorizado | regras mantidas sem bypass | log da regressão |
 
 **Fixtures:** 15 contas pontuadas com 2 duplicadas por CNPJ, 1 por domínio, 1 em coorte ativa e 1 impedida.  
 **Erros obrigatórios:** decisão sem motivo, aprovação com duplicidade aberta, `prospector` decidindo, exportação por `vendedor`.  
-**Evidência:** log dos testes, CSV e registro de aceite da liderança.
+**Evidência:** log dos testes e CSV de teste. A primeira coorte real é o teste do cliente desta SPEC.
 
 ## Handoff e operação
 
@@ -102,16 +102,24 @@ A liderança filtra a lista, vê duplicidades sinalizadas, decide conta a conta 
 - **Como monitorar:** contas aguardando revisão, duplicidades abertas, coortes ativas e volume.
 - **Pendência conhecida:** canais previstos da coorte são apenas declarativos até a Fase 3.
 
+## Teste do cliente (um só, no fim da SPEC)
+
+Pedido quando a F2-T04 estiver no ar e o teste da SPEC-2-002 tiver sido feito, pelo champion com a liderança da SV:
+
+1. Filtrar a lista e recomendar as contas da primeira coorte.
+2. Decidir as contas com motivo (aprovar, rejeitar ou devolver) e resolver as duplicidades.
+3. Aprovar a coorte e exportar o CSV.
+
+Aprovado quando a primeira coorte real é aprovada, congelada na versão do ICP e exportada (CA-2-12).
+
 ## Tasks vinculadas
 
 | ID | Task | Dono | SPEC | Critério | Recorte da prova | Evidência esperada | Pré-condições | Status |
 |---|---|---|---|---|---|---|---|---|
-| F2-T08 | Criar fixtures e testes RED de revisão e coortes | Ethos | SPEC-2-003 | RED falha em duplicidade, motivo e coorte concorrente | RED | log RED e fixture | F2-T06 | ☐ |
-| F2-T09 | Implementar lista revisão coortes e exportação | Ethos | SPEC-2-003 | CA-2-09 a CA-2-11 passam | GREEN | migrações, log, capturas e CSV | F2-T08 | ☐ |
-| F2-T10 | Aprovar a primeira coorte real com a liderança | Champion SV | SPEC-2-003 | CA-2-12 aprovado sem bypass | REGRESSÃO | aceite e CSV da coorte | F2-T09 e F2-T07 | ☐ |
+| F2-T04 | Construir lista, revisão, coortes e exportação: testes e telas | Ethos | SPEC-2-003 | CA-2-09 a CA-2-11 passam | RED → GREEN | migrações, log dos testes e CSV de teste | F2-T03 | ☐ |
 
 ## Emendas
 
 | Data | Origem do sinal | Micro-spec/task | Motivo |
 |---|---|---|---|
-| — | — | — | — |
+| 2026-10-29 | Fase 2 travando a cada task | SPEC-2-003 | Testes RED juntos com a construção numa task só; validação com dados reais vira o teste do cliente da SPEC; construção sem esperar dado da SV |

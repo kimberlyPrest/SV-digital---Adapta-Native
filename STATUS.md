@@ -2,11 +2,13 @@
 
 **Fase atual:** Fase 2 — inteligência de contas e construção de listas  
 **Estado:** liberada  
-**Última atualização:** 2026-10-23
+**Última atualização:** 2026-10-29
 
 ## Próximo marco
 
-F2-T01: alinhar as permissões do Skip à matriz M1–M5 (importação para liderança, contatos sensíveis para admin) e entregar a tela de usuários; em seguida, pesquisa e enriquecimento com proveniência (SPEC-2-001).
+F2-T01: alinhar as permissões do Skip à matriz M1–M5, entregar a tela de importação completa, mostrar os contatos sensíveis ao admin no detalhe da conta e entregar a tela de usuários. Depois, F2-T02 a F2-T04 em sequência.
+
+A fase tem 4 tasks do agente e 4 testes do cliente, um no fim de cada SPEC (ver `04_fase-atual/fase.md`).
 
 ## Entregas
 

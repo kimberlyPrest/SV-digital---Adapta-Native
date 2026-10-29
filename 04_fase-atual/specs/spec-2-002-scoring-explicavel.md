@@ -11,7 +11,7 @@
 - **Estado atual:** ICP versionado (SPEC-1-002) e evidências por conta (SPEC-2-001), sem priorização.
 - **Estado desejado:** cada conta tem pontuação de aderência e prioridade reproduzível, com componentes, pesos e evidências visíveis, vinculada à versão do ICP.
 - **Decisões já fechadas:** pontuação é recomendação, não decisão (8.3); aprovação final é humana (7.4); mudanças de critério valem para novas execuções e preservam o histórico (8.15).
-- **Bloqueios:** pesos e critérios mínimos do ICP v1 definidos pela liderança — o Ethos não decide pesos.
+- **Bloqueios:** nenhum para construir. O Ethos não decide pesos: constrói e prova com os pesos das fixtures, e a liderança passa os pesos reais do ICP v1 no teste do cliente desta SPEC, quando o agente publica a versão com a liderança como aprovadora.
 
 ## Resultado observável
 
@@ -63,7 +63,7 @@ A liderança abre a lista do ICP e vê, para cada conta, a nota, os componentes 
 2. Alterar somente pontuação, explicação e colunas da lista.
 3. Não definir pesos nem calibrar por conta própria.
 4. Testes → migração → função de pontuação → explicação → telas.
-5. Parar se a liderança não tiver publicado pesos.
+5. Sem pesos publicados pela liderança, seguir com os pesos das fixtures só nos testes; nunca publicar pesos reais em nome da liderança.
 6. Manter a nota determinística; IA só no texto.
 
 ## Checklist de execução
@@ -87,11 +87,11 @@ A liderança abre a lista do ICP e vê, para cada conta, a nota, os componentes 
 |---|---|---|---|---|
 | RED | fixture de ICP com pesos e 8 contas com evidências variadas | rodar testes de pontuação | falham sem função | log RED |
 | GREEN | mesma fixture + nova versão do ICP | testes da função + `supabase test db` | CA-2-05 a CA-2-08 passam | log e `score_runs` |
-| REFACTOR/REGRESSÃO | 15 contas conhecidas pela liderança | comparar ordenação com a percepção da liderança | divergências registradas, sem ajuste silencioso | relatório de calibração |
+| REFACTOR/REGRESSÃO | determinismo e versões do ICP | repetir a pontuação e publicar uma versão nova nas fixtures | mesma nota na repetição e histórico preservado | log da regressão |
 
 **Fixtures:** ICP v1 com 4 critérios e 1 impedimento; contas completa, sem unidades, impedida, abaixo do mínimo e empatada.  
 **Erros obrigatórios:** critério sem peso, justificativa com fato não evidenciado, `vendedor` tentando executar pontuação.  
-**Evidência:** log dos testes e relatório de calibração assinado pela liderança.
+**Evidência:** log dos testes. A calibração com 15 contas conhecidas é o teste do cliente desta SPEC.
 
 ## Handoff e operação
 
@@ -100,16 +100,24 @@ A liderança abre a lista do ICP e vê, para cada conta, a nota, os componentes 
 - **Como monitorar:** proporção de componentes sem evidência e distribuição de notas por coorte.
 - **Pendência conhecida:** pesos do ICP v1 dependem da liderança.
 
+## Teste do cliente (um só, no fim da SPEC)
+
+Pedido quando a F2-T03 estiver no ar e o teste da SPEC-2-001 tiver sido feito, pela liderança da SV:
+
+1. Passar ao agente os pesos e o critério mínimo do ICP v1; o agente publica a versão com a liderança como aprovadora.
+2. Pontuar o recorte pesquisado e conferir a ordem de 15 contas que a liderança conhece.
+3. Abrir a explicação de uma conta e conferir componentes e evidências.
+
+Aprovado quando as divergências estão registradas e aceitas, ou quando uma nova versão do ICP foi publicada, sem ajuste silencioso (CA-2-05 a CA-2-08).
+
 ## Tasks vinculadas
 
 | ID | Task | Dono | SPEC | Critério | Recorte da prova | Evidência esperada | Pré-condições | Status |
 |---|---|---|---|---|---|---|---|---|
-| F2-T05 | Criar fixtures e testes RED da pontuação | Ethos | SPEC-2-002 | RED falha em componentes, versão e determinismo | RED | log RED e fixture | F2-T03 | ☐ |
-| F2-T06 | Implementar pontuação explicável versionada | Ethos | SPEC-2-002 | CA-2-05 a CA-2-08 passam | GREEN | migração, log e capturas | F2-T05 e pesos publicados | ☐ |
-| F2-T07 | Calibrar a ordenação com 15 contas conhecidas | Liderança SV | SPEC-2-002 | divergências registradas e aceitas ou nova versão publicada | REGRESSÃO | relatório de calibração | F2-T06 e F2-T04 | ☐ |
+| F2-T03 | Construir a pontuação explicável versionada: testes, função e telas | Ethos | SPEC-2-002 | CA-2-05 a CA-2-08 passam | RED → GREEN | migração e log dos testes | F2-T02 | ☐ |
 
 ## Emendas
 
 | Data | Origem do sinal | Micro-spec/task | Motivo |
 |---|---|---|---|
-| — | — | — | — |
+| 2026-10-29 | Fase 2 travando a cada task | SPEC-2-002 | Testes RED juntos com a construção numa task só; validação com dados reais vira o teste do cliente da SPEC; construção sem esperar dado da SV |
