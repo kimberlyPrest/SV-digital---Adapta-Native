@@ -1,0 +1,72 @@
+SUÍTE GREEN — F1-T05 — SPEC-1-002 (ICP, funil, entidades e importação idempotente)
+Data: 2026-10-09T08:05-03:00
+Executor: MCP Supabase execute_sql (transações com ROLLBACK — método das F1-T01..04)
+Projeto: diegocunha's Project (wwdwaaerurtabobcsppb)
+Migração: f1t05_model_rules_importer (aplicada 2026-10-09)
+==================================================================
+
+MIGRAÇÃO F1-T05 (conteúdo, na ordem correta de dependências):
+  1. funnel_stages (taxonomia controlada — nomes de clientes NÃO são etapas)
+     + seed_default_funnel() na criação de cada organização (7 etapas padrão)
+  2. accounts: colunas exception_reason e funnel_stage_id
+  3. import_batch_rows (rastreabilidade por linha: categoria, motivo, conta/contato)
+  4. Superfície de escrita refinada (ajuste da F1-T02): anon nunca escreve;
+     authenticated tem DML APENAS nas tabelas de negócio (RLS decide por papel);
+     audit_events/integration_events/import_batch_rows seguem server-side apenas
+  5. RLS + policies: funnel_stages (membros leem; admin RU; lider CRUD — M2),
+     import_batch_rows (admin/lider/prospector leem — M4)
+  6. RN-124: trigger icp_published_immutable — conteúdo de versão publicada
+     de ICP é imutável (P0001); correção = nova versão (CA-1-05)
+  7. RN-121: constraint rn121_active_requires_owner_next_step — ativo
+     reconciliado exige owner + next_step OU exceção justificada (CA-1-07)
+  8. import_commercial_base(org, hash, csv) — security definer, idempotente
+     por hash (reimport retorna o lote anterior), valida cabeçalho/linha,
+     normaliza CNPJ (RN-122: duplicado → 'duplicado', mesma conta sugerida),
+     contato sem fonte nasce NÃO-verificável (RN-123), lote fica
+     'importado_nao_reconciliado' — NUNCA libera contato automaticamente
+  9. import_batch_report(batch) — relatório separa as 4 categorias (CA-1-08)
+
+RESULTADO DA SUÍTE — 10 asserções OK (GREEN):
+
+  ok 1 - CA-1-05 GREEN: edicao retroativa de ICP publicado negada (RN-124, P0001)
+  ok 2 - CA-1-06 GREEN: importador existe (import_commercial_base)          [has_function]
+  ok 3 - CA-1-06 GREEN: CNPJ triplicado na fixture vira UMA conta (RN-122)
+  ok 4 - CA-1-06 GREEN: 12 linhas → 10 contas únicas; reimport do mesmo hash NÃO duplica
+  ok 5 - CA-1-06 GREEN: reimport referencia o lote anterior (1 lote por hash)
+  ok 6 - CA-1-07 GREEN: ativo sem owner/next_step/excecao rejeitado (RN-121, 23514)
+  ok 7 - CA-1-07 GREEN: exceção justificada é caminho válido da regra (RN-121)
+  ok 8 - CA-1-08 GREEN: relatório separa importados(10)/duplicados(2)/incompletos(0)/rejeitados(0)
+  ok 9 - RN-123 GREEN: contato sem fonte nasce NÃO-verificável (pesquisa_necessária)
+  ok 10 - RN-125 GREEN: prospector não publica ICP (RLS mantida)            [regressão]
+
+CRITÉRIOS DE ACEITE (fase.md):
+  CA-1-05 ✅ publicar ICP v1 não permite edição retroativa (trigger RN-124, P0001)
+  CA-1-06 ✅ importar duas vezes o mesmo arquivo não duplica conta/contato/atividade
+           (hash idempotente: 1 lote por hash; 12 linhas → 10 contas únicas;
+           CNPJ triplicado → 1 conta)
+  CA-1-07 ✅ todo ativo reconciliado possui owner e próximo passo ou exceção
+           (constraint RN-121: 23514; exceção justificada aceita)
+  CA-1-08 ✅ relatório separa importados, duplicados, incompletos e rejeitados
+           (import_batch_report + import_batch_rows: 10/2/0/0 na fixture)
+
+REGRESSÃO MANTIDA:
+  - RN-125 (RLS da F1-T02): prospector segue sem publicar ICP/invalidar lote ✅
+  - RN-123: contato sem fonte segue não-verificável ✅
+  - Banco pós-suíte: 0 resíduos (0 fixtures, 0 orgs, 0 contas, 0 lotes, 0 auditoria)
+  - Estado do schema: 11 tabelas, 33 políticas, 2 funções do importador,
+    constraint RN-121, trigger RN-124
+
+AJUSTE DE SUPERFÍCIE (registrado, com motivo):
+  O revoke amplo da F1-T02 (DML a authenticated em TODAS as tabelas) bloqueava
+  o caminho do app: a regra RN-124/RN-121 nunca era alcançada (o 42501 do
+  revoke vinha antes). Ajuste na migração F1-T05: authenticated volta a ter
+  DML nas tabelas de NEGÓCIO (8 tabelas) — a autorização por papel é da RLS
+  (matriz M1–M5); anon segue sem DML; tabelas de sistema (audit_events,
+  integration_events, import_batch_rows) seguem server-side apenas.
+  Provas negativas de PERMISSÃO (RN-125) continuam passando — a RLS é a
+  autorização real.
+
+RESÍDUO PÓS-EXECUÇÃO: 0 (verificado acima). Nenhum dado real importado.
+
+VEREDITO: GREEN — CA-1-05 a CA-1-08 passam; importador funcional em
+homologação (fixture fictícia). Task pronta para teste humano.

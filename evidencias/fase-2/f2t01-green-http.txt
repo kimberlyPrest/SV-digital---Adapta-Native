@@ -1,0 +1,17 @@
+  contatos por papel: {"admin":5,"lider_comercial":5,"prospector":5,"vendedor":0,"leitor":0}
+✔ CA-2-14 · admin lê contatos sensíveis; vendedor e leitor não (1499.021251ms)
+  negativas (prospector): 403 403
+✔ CA-2-15 · só admin atribui papel e revoga membership (283.373162ms)
+✔ CA-2-15 · admin revoga e o acesso cai na próxima requisição (679.262493ms)
+  eventos novos auditados: 7 · sem actor: 0
+✔ CA-2-15 · revogação e atribuição geram audit_events com actor preenchido (203.901536ms)
+  admin importando -> 403
+✔ CA-2-14 · admin NÃO importa base (M4/PM-05) (186.372929ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3001.443588

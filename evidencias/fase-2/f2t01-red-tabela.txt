@@ -1,0 +1,42 @@
+✖ CA-2-13 · PODE é idêntico a M1–M6 (uma linha por papel × recurso) (5.629349ms)
+✔ CA-2-13 · nenhum papel tem permissão fora da matriz (1.051378ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 242.575378
+
+✖ failing tests:
+
+test at src/hooks/__tests__/pode-matriz.test.ts:71:1
+✖ CA-2-13 · PODE é idêntico a M1–M6 (uma linha por papel × recurso) (5.629349ms)
+  AssertionError [ERR_ASSERTION]: Divergências PODE × matriz:
+  lider_comercial.usuarios: PODE=false mas matriz=R
+  lider_comercial.importar: PODE=false mas matriz=CU
+  admin.contatos: PODE=false mas matriz=R
+  admin.corrigir: PODE=false mas matriz=R
+  + actual - expected
+  
+  + [
+  +   'lider_comercial.usuarios: PODE=false mas matriz=R',
+  +   'lider_comercial.importar: PODE=false mas matriz=CU',
+  +   'admin.contatos: PODE=false mas matriz=R',
+  +   'admin.corrigir: PODE=false mas matriz=R'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///home/ethos/.assistant/workspace/repos/SV-digital---Adapta-Native/05_entregas/sv-digital-app/src/hooks/__tests__/pode-matriz.test.ts:90:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 'lider_comercial.usuarios: PODE=false mas matriz=R', 'lider_comercial.importar: PODE=false mas matriz=CU', 'admin.contatos: PODE=false mas matriz=R', 'admin.corrigir: PODE=false mas matriz=R' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,74 @@
+SUÍTE GREEN — F1-T02 — SPEC-1-001 (schema base, Auth, RLS, auditoria, filas)
+Data: 2026-10-07T19:45-03:00
+Executor: MCP Supabase execute_sql (protocolo Postgres bloqueado no sandbox —
+mesmo método validado na F1-T01); cada bloco em transação com ROLLBACK.
+Projeto: diegocunha's Project (wwdwaaerurtabobcsppb)
+==================================================================
+
+MIGRAÇÕES APLICADAS (em ordem, reproduzíveis do zero):
+  1. f1t02_extensions_pgmq      — pgmq no schema dedicado
+  2. f1t02_schema_base          — organizations, profiles, memberships,
+     audit_events (RN-103), integration_events (RN-104), accounts, contacts,
+     icp_versions, import_batches + índices + triggers de updated_at +
+     trigger audit_row_change() (ator/ação/objeto/antes/depois/timestamp) +
+     handle_new_user() (perfil automático)
+  3. f1t02_rls_matrix           — RLS em 9 tabelas (FORCE), helpers
+     jwt_sub()/role_in_org()/is_active_member()/has_global_role(), 28 políticas
+     implementando a matriz M1–M5 + deny by default (PM-06)
+  4. f1t02_private_queue        — fila pgmq 'jobs' privada (0 grants a
+     anon/authenticated; revoke de schema e funções)
+  5. f1t02_revoke_public_grants — endurecimento: revoke INSERT/UPDATE/DELETE
+     genérico do Supabase a anon/authenticated em public (acesso continua VIA
+     RLS; SELECT permanece para o PostgREST aplicar políticas de leitura)
+
+RESULTADO DA SUÍTE (13 asserções — todas GREEN):
+  ok 1 - CA-1-01: usuario da org A nao ve contas da org B
+  ok 2 - Caminho de erro: UUID de outra organizacao = zero linhas
+  ok 3 - PM-05: admin nao publica ICP (tentativa negada por RLS, 42501)
+  ok 4 - PM-04: prospector nao publica ICP (tentativa negada por RLS, 42501)
+  ok 5 - PM-03: vendedor nao importa base (tentativa negada por RLS, 42501)
+  ok 6 - PM-02: leitor nao acessa contatos com PII (zero linhas)
+  ok 7 - M1: lider_comercial nao gerencia memberships (UPDATE altera zero linhas)
+  ok 8 - CA-1-02: acao critica gera evento de auditoria com ator e timestamp
+  ok 9 - CA-1-13: membership revogada remove acesso imediatamente
+  ok 10 - PM-06: usuario sem membership nao ve nada (deny by default)
+  ok 11 - Caminho de erro: JWT ausente (anon) = zero linhas
+  ok 12 - PM-01: papel efetivo da sessao simulada e authenticated (nunca service_role)
+  ok 13 - M1: vendedor nao le audit_events (zero linhas)
+  + re-validação pós-revoke: CA-1-01 ok e PM-05 ok (suíte continua GREEN)
+
+CRITÉRIOS DE ACEITE (fase.md):
+  CA-1-01 ✅ isolamento entre organizações (ok 1, 2, 11)
+  CA-1-02 ✅ auditoria com ator e timestamp (ok 8)
+  CA-1-03 ✅ sem credencial privilegiada no frontend (ok 12; service role ausente
+           do bundle Skip — publishable key + RLS apenas)
+  CA-1-04 ✅ schema reproduzível (5 migrações aplicadas em sequência no projeto
+           real; ordem registrada acima)
+  CA-1-13 ✅ matriz M1–M5 provada por papel, com prova negativa e revogação
+           imediata (ok 3-7, 9, 13)
+
+FILAS PRIVADAS (checklist): pgmq 'jobs' com 0 grants a anon/authenticated
+(verificado via information_schema.role_table_grants — vazio).
+
+ENDURECIMENTO (achado e corrigido): o Supabase concede INSERT/UPDATE/DELETE
+genéricos a anon/authenticated por padrão em tabelas novas. Revogados em
+f1t02_revoke_public_grants — a negação agora vem de DUAS camadas (grant + RLS).
+Verificado: 0 tabelas com DML amplo após o revoke.
+
+RESÍDUO VERIFICADO PÓS-EXECUÇÃO (2026-10-07):
+  usuários fixture em auth.users: 0 | organizations: 0 | accounts: 0 | audit_events: 0
+  → rollback funcionou; nenhuma fixture permaneceu no banco.
+  Schema de produto persistido (planejado): 9 tabelas, 28 políticas RLS,
+  fila 'jobs', triggers de auditoria.
+
+CORREÇÕES DURANTE A EXECUÇÃO (registradas para aprendizado):
+- Provas negativas da matriz: ações proibidas são de ESCRITA → throws_ok com
+  SQLSTATE 42501 (mensagem NULL — throws_ok de 3 args compara a mensagem do
+  erro, que difere do rótulo do teste); leituras restritas → zero linhas.
+- M1 lider×memberships: sem política FOR UPDATE o UPDATE altera ZERO linhas
+  (não lança exceção) — asserção correta é efeito líquido zero.
+- CA-1-02: verificação do evento de auditoria feita como admin na MESMA
+  transação (troca de request.jwt.claim.sub), pois M1 restringe audit_events
+  a admin/lider.
+- Provas negativas exigem DADO existente (sem RLS o usuário VÊ o dado proibido
+  → RED; com RLS deixa de ver → GREEN).

@@ -1,0 +1,13 @@
+nome,cnpj,site,setor,porte,regiao,unidades,estagio_legado,responsavel,ultima_acao,origem,contato_nome,contato_cargo,contato_telefone,contato_email,contato_fonte,contato_data_verificacao
+Mercado Aurora,12345678000195,https://mercadoaurora.test,Alimentação,medio,RS,3,Encaminhado ao vendedor,kim,2026-08-01,prospeccao_ativa,Ana Souza,Compras,+55 51 99999-0001,ana@aurora.test,linkedin,2026-08-01
+Mercado Aurora - Filial Centro,12345678000195,https://mercadoaurora.test,Alimentação,medio,RS,3,Encaminhado ao vendedor,kim,2026-08-01,prospeccao_ativa,Ana Souza,Compras,+55 51 99999-0001,ana@aurora.test,linkedin,2026-08-01
+Supermercado Integracao,,https://superintegracao.test,Alimentação,grande,RS,5,Prospecção,,2026-07-15,prospeccao_ativa,Carlos Lima,Expansão,51988887777,carlos@integracao.test,,
+Rede Vitoria,23456789000146,https://redevitoria.test,Varejo,medio,SC,4,Contato inicial,kim,2026-09-02,prospeccao_ativa,Paula Rocha,Marketing,+(55) 51 97777-6666,paula@vitoria.test,site_institucional,2026-09-02
+Mercado Vale Verde,34567890000197,https://valeverde.test,Alimentação,pequeno,RS,2,Prospecção,,2026-09-10,prospeccao_ativa,Joao Pires,Gerente,,joao@valeverde.test,,
+Atacado Rede Sul,45678901000148,https://redesul.test,Atacado,grande,RS,6,Encaminhado ao vendedor,kim,2026-08-20,prospeccao_ativa,Maria Nunes,Compras,+55 51 96666-5555,maria@redesul.test,linkedin,2026-08-20
+Mercado Bom Preco,56789012000199,https://bompreco.test,Alimentação,pequeno,RS,1,Encaminhado ao vendedor,,2026-06-11,lista_importada,Fernanda Dias,Proprietária,551955554444,fernanda@bompreco.test,kommo,2026-06-11
+Varejista Planalto,67890123000140,https://planalto.test,Varejo,medio,SC,3,Reunião agendada,kim,2026-09-28,prospeccao_ativa,Rafael Costa,Operações,+55 48 98888-7777,rafael@planalto.test,linkedin,2026-09-28
+Mercado Litoral,78901234000191,https://litoral.test,Alimentação,medio,SC,2,Prospecção,,2026-09-05,prospeccao_ativa,Bruna Alves,Marketing,(51) 93333-2222,bruna@litoral.test,telefone_comercial,2026-09-05
+Rede Centro Sul,89012345000142,https://centrosul.test,Varejo,grande,RS,8,Encaminhado ao vendedor,kim,2026-08-30,prospeccao_ativa,Eduardo Ramos,Suprimentos,+55 51 92222-1111,eduardo@centrosul.test,apollo,2026-08-30
+Mercado Portal,90123456000193,https://portal.test,Alimentação,pequeno,RS,1,Desqualificado,,2026-05-22,lista_importada,Lucia Prado,Proprietária,,lucia@portal.test,kommo,2026-05-22
+Mercado Aurora - Matriz,12345678000195,https://mercadoaurora.test,Alimentação,medio,RS,3,Encaminhado ao vendedor,kim,2026-08-01,prospeccao_ativa,Ana Souza,Diretora,+55 51 99999-0002,ana.souza@aurora.test,linkedin,2026-08-01

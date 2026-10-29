@@ -1,0 +1,10 @@
+✔ CA-2-13 · PODE é idêntico a M1–M6 (uma linha por papel × recurso) (4.498971ms)
+✔ CA-2-13 · nenhum papel tem permissão fora da matriz (0.82256ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 295.95277

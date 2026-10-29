@@ -1,0 +1,50 @@
+SUÍTE RED — F1-T04 — SPEC-1-002 (modelo comercial e importação)
+Data: 2026-10-08T15:45-03:00
+Executor: MCP Supabase execute_sql (transações com ROLLBACK — método das F1-T01/02/03)
+Projeto: diegocunha's Project (wwdwaaerurtabobcsppb)
+Suíte: supabase/tests/database/09_comercial_red_test.sql (6 blocos, 9 asserções)
+Fixtures: supabase/tests/fixtures/comercial-base.csv (12 contas fictícias)
+          supabase/tests/fixtures/mapeamento-colunas.md (provisório — export real na F1-T06)
+==================================================================
+
+RESULTADO — RED CONFIRMADO (5 not ok) + 2 ok (proteções já GREEN da F1-T02):
+
+  not ok 1 - CA-1-05: publicar ICP v1 nao permite edicao retroativa
+  #     caught: 42501: permission denied for table icp_versions
+  #     wanted: P0001
+  #     → a edição retroativa HOJE é barrada só pelo REVOKE da F1-T02 (superfície),
+  #       não por imutabilidade de versão publicada (regra de negócio ainda inexistente)
+
+  not ok 2 - CA-1-06: importador existe (função import_commercial_base)      [via has_function]
+  not ok 3 - CA-1-06: reimportar o MESMO hash não duplica contas
+  #     have: (0) want: (10)
+  #     → o importador não existe: nenhuma conta importada, idempotência não provada
+
+  not ok 4 - CA-1-07: ativo reconciliado sem owner/next_step é rejeitado (RN-121)
+  #     caught: 42501: permission denied for table accounts
+  #     wanted: P0001
+  #     → a regra RN-121 não existe como constraint/check (só o revoke barra o caminho)
+
+  not ok 5 - CA-1-08: relatório do lote existe (função import_batch_report)
+  #     → função de relatório (importados/duplicados/incompletos/rejeitados) inexistente
+
+  ok 6 - RN-123: contato sem fonte NÃO fica verificável (importador marca pesquisa_necessaria)
+  #     → GREEN incidental: sem importador, nenhum contato nasce "verificável" —
+  #       a lacuna real será exercitada na F1-T05 com o importador existente
+
+  ok 7 - RN-125: prospector não invalida lote (negado e auditado)            [RLS F1-T02]
+  ok 8 - RN-125: prospector não publica ICP (negado e auditado)              [RLS F1-T02]
+
+RESUMO:
+  asserções not ok: 5 (RED — duplicidade, imutabilidade, RN-121, relatório, importador)
+  asserções ok:     3 (proteções de permissão já GREEN da F1-T02 + incidental RN-123)
+  Esperado nesta task: RED nas provas do importador/regras — CONFIRMADO.
+  GREEN na F1-T05 (implementar ICP, funil, entidades e importação idempotente).
+
+CRITÉRIO BINÁRIO (fase.md): RED reproduz duplicidade e lacunas ✅
+  - duplicidade: CA-1-06 (hash idempotente ausente) + fixture com CNPJ triplicado
+  - lacunas: CA-1-07 (RN-121 sem constraint), CA-1-08 (relatório ausente), CA-1-05 (imutabilidade ausente)
+
+RESÍDUO PÓS-EXECUÇÃO (verificado 08/10): fixtures em rollback — 0 resíduos.
+CORREÇÃO DE EXECUÇÃO: RN-123 fixture via caminho autorizado (set local role
+postgres) — INSERT direto por authenticated foi revogado na F1-T02 (correto).

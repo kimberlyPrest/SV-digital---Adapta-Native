@@ -1,0 +1,21 @@
+=== F2-T04 RED — 2026-10-29 (SPEC-2-003) ===
+Consulta ao banco (Supabase wwdwaaerurtabobcsppb) ANTES da migração:
+
+  cohorts          -> null  (tabela não existe)
+  cohort_members   -> null  (tabela não existe)
+  account_reviews  -> null  (tabela não existe)
+  saved_filters    -> null  (tabela não existe)
+  review_account() -> 0     (função não existe)
+  approve_cohort() -> 0     (função não existe)
+  export_cohort_csv() -> 0  (função não existe)
+
+Pré-existentes (dependências da task, já construídas):
+  accounts, evidences, score_runs, score_account()
+
+Consequência nas asserções ("falham sem regras"):
+- CA-2-09 filtro salvo ................ ERRO 42P01
+- CA-2-10 duplicidade e coorte ativa ... ERRO 42P01
+- CA-2-11 decisão com motivo / negada .. ERRO 42P01
+- CA-2-12 congelamento e CSV ........... ERRO 42P01
+
+RED confirmado. Nenhuma alteração feita no banco.

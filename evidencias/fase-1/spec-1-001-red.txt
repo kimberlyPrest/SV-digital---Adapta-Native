@@ -1,0 +1,67 @@
+SUÍTE RED — F1-T01 — SPEC-1-001 (isolamento, matriz M1–M5, auditoria)
+Data: 2026-10-07T18:10-03:00
+Executor: MCP Supabase execute_sql (protocolo Postgres 5432/6543 bloqueado no sandbox;
+psql/psycopg2 não alcançam o host — execução bloco a bloco via MCP, transação com ROLLBACK)
+Projeto: diegocunha's Project (wwdwaaerurtabobcsppb)
+Extensão pgtap: instalada no schema extensions (migração test_infra_pgtap_extension)
+==================================================================
+
+TEST FILE: 01_isolation_test.sql :: CA-1-01 usuario da org A nao ve contas da org B
+  not ok 1 - CA-1-01: usuario da org A nao ve contas da org B
+  #     Results differ beginning at row 1: have: (1) want: (0)
+  not ok 2 - Caminho de erro: UUID de outra organizacao = zero linhas
+  #     Results differ beginning at row 1: have: (1) want: (0)
+
+TEST FILE: 02_role_matrix_test.sql (5 blocos, um por papel)
+  not ok 1 - PM-05: admin nao publica ICP (prova negativa)
+  #     have: (1) want: (0)
+  not ok 1 - PM-04: prospector nao publica ICP (prova negativa)
+  #     have: (1) want: (0)
+  not ok 1 - PM-03: vendedor nao importa base (prova negativa)
+  #     have: (1) want: (0)
+  not ok 1 - PM-02: leitor nao acessa contatos com PII (prova negativa)
+  #     have: (1) want: (0)
+  not ok 1 - M1: lider_comercial nao gerencia memberships (prova negativa)
+  #     have: (6) want: (0)
+
+TEST FILE: 03_audit_test.sql :: CA-1-02
+  not ok 1 - CA-1-02: acao critica gera evento de auditoria com ator e timestamp
+  #     have: (0) want: (1)
+
+TEST FILE: 04_revocation_test.sql :: CA-1-13
+  not ok 1 - CA-1-13: membership revogada remove acesso imediatamente
+  #     have: (1) want: (0)
+
+TEST FILE: 05_deny_by_default_test.sql :: PM-06
+  not ok 1 - PM-06: usuario sem membership nao ve nada (deny by default)
+  #     have: (2) want: (0)
+
+TEST FILE: 06_anon_jwt_missing_test.sql
+  not ok 1 - Caminho de erro: JWT ausente (anon) = zero linhas
+  #     have: (2) want: (0)
+
+TEST FILE: 07_service_role_not_exposed_test.sql
+  ok 1 - PM-01: papel efetivo da sessao simulada e authenticated (nunca service_role)
+  #     (controle de sanidade da simulação de sessão — não é critério RED)
+  not ok 2 - M1: vendedor nao le audit_events (prova negativa)
+  #     have: (1) want: (0)
+
+==================================================================
+RESUMO SUÍTE RED F1-T01
+  asserções ok:     1  (sanidade PM-01 da simulação de sessão)
+  asserções not ok: 12 (RED — todas as provas de isolamento/matriz/auditoria)
+  Esperado nesta task: TODAS as provas em 'not ok' (RED). CONFIRMADO.
+  GREEN só depois da F1-T02 (RLS + auditoria).
+==================================================================
+
+CORREÇÕES APLICADAS DURANTE A EXECUÇÃO (registradas para F1-T02):
+- IDs de fixture fixos determinísticos (a0000000-...-01..06) — sub dinâmico
+  via DO $$ falha no executor remoto (SET LOCAL não aceita subconsulta).
+- 03_audit_test.sql: insert de auditoria usa ID próprio (evita colisão com fixture).
+- 07: extensions.eq() não existe na versão pgtap do projeto; corrigido para is().
+- Provas negativas exigem DADOS existentes (sem RLS o usuário VÊ o dado proibido
+  e a asserção falha = RED; com RLS deixa de ver = GREEN em F1-T02).
+
+RESÍDUO VERIFICADO PÓS-EXECUÇÃO (2026-10-07):
+  tabelas em public: 0 | usuários fixture em auth.users: 0 | pgtap: 1 (persistido)
+  → rollback funcionou; nenhuma fixture permaneceu no banco.

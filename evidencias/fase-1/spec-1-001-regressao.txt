@@ -1,0 +1,53 @@
+RELATÓRIO DE REGRESSÃO — F1-T03 — SPEC-1-001
+(Provar revogação, secrets e recuperação do schema)
+Data: 2026-10-08T11:05-03:00 · Executor: MCP Supabase execute_sql (transações com ROLLBACK)
+Dono da task: Juliano Dossena (Diego) — Administrador técnico
+Projeto: diegocunha's Project (wwdwaaerurtabobcsppb)
+==================================================================
+
+SUÍTE: supabase/tests/database/08_regression_test.sql (3 grupos, 12 asserções)
++ migração nova: f1t03_revoke_member_fn (função server-side autorizada de
+  revogação, security definer, sem execução a anon/authenticated)
+
+RESULTADO — 12/12 asserções OK:
+
+  GRUPO REG-A — Regressão das provas GREEN (F1-T02)
+    ok REG-A1 · CA-1-01: isolamento mantido (org A nao ve org B)
+    ok REG-A2 · CA-1-13: revogado sem acesso
+    ok REG-A3 · PM-06: deny by default mantido
+    ok REG-A4 · PM-05: escrita proibida segue negada (42501)
+
+  GRUPO REG-B — Revogação ponta a ponta (NOVO nesta task)
+    ok REG-B1 · membro ativo ve registro da propria org
+    ok REG-B2 · desativacao de membership (caminho autorizado) gera evento de auditoria
+    ok REG-B3 · CA-1-13: revogacao remove acesso IMEDIATAMENTE
+
+  GRUPO REG-C — Recuperação/reprodução do schema (NOVO nesta task)
+    ok REG-C1 · schema reproduz 9 tabelas (migrações 2/4)
+    ok REG-C2 · 9 tabelas com RLS FORCE (migração 3)
+    ok REG-C3 · 28 políticas (matriz M1-M5)
+    ok REG-C4 · fila pgmq privada (0 grants públicos)
+    ok REG-C5 · negação em 2 camadas (0 grants DML públicos)
+
+CRITÉRIOS BINÁRIOS DA TASK:
+  ✅ Regressão completa aprovada — 12/12 ok (GREEN da F1-T02 intacto + 7 provas novas)
+  ✅ Nenhuma credencial exposta — varredura do repo em 08/10: 0 achados;
+     inventário em evidencias/fase-1/secrets-inventario.md (vault: 0 segredos;
+     service_role sem login; vault sem grants a papéis; Skip só com publishable key)
+  ✅ Rollback demonstrado — schema reproduzível pelas 7 migrações versionadas
+     (prova de catálogo REG-C); fixtures em rollback (resíduo 0, verificado abaixo)
+
+ACHADO DE EXECUÇÃO (resolvido):
+  O endurecimento da F1-T02 (revoke de DML a authenticated) impede que o ADMIN
+  desative memberships por SQL direto de papel humano — correto conforme PM-01/
+  RN-102: a administração passa por caminho server-side autorizado. Criada a
+  função public.revoke_member(uuid, uuid) em migração (security definer, execução
+  revogada a anon/authenticated), que preserva o audit trigger. Prova REG-B
+  exercita exatamente esse caminho: desativação → evento de auditoria → efeito
+  imediato na leitura do revogado.
+
+RESÍDUO PÓS-EXECUÇÃO (verificado 08/10):
+  usuários fixture: 0 | orgs: 0 | contas: 0 | auditoria: 0
+  → rollback das fixtures funcionou; schema de produto intacto.
+
+VEREDITO: REGRESSÃO COMPLETA APROVADA — task pronta para teste humano.

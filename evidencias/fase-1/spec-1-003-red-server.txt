@@ -1,0 +1,22 @@
+PROVAS SERVER-SIDE DA MATRIZ — F1-T07 (SPEC-1-003) — 2026-10-15
+Executor: MCP Supabase execute_sql (transação com ROLLBACK; fixtures commitadas à parte)
+Projeto: diegocunha's Project (wwdwaaerurtabobcsppb) · org SV Digital · 308 contas
+==================================================================
+select extensions.plan(10);
+
+ok 1 - P1 VENDEDOR: INSERT em accounts negado (RLS — 42501)
+ok 2 - P2 VENDEDOR: contatos invisíveis (0 linhas — M3)
+ok 3 - P3 LEITOR: contatos invisíveis ("abrir telefone" negado)
+ok 4 - P4 LEITOR: UPDATE em accounts altera ZERO linhas (efeito nulo)
+ok 5 - P5 PROSPECTOR: invalidação de lote altera ZERO linhas (M4 — lider apenas)
+ok 6 - P6 PROSPECTOR: INSERT em accounts permitido (M3)
+ok 7 - P7 LIDER: DELETE de conta altera ZERO linhas (M2 — admin apenas)
+ok 8 - P8 ADMIN: lê base completa (308)
+ok 9 - P9 ADMIN: execução de importação negada (RN-125/M4 — 42501)
+ok 10 - P10 LEITOR: lê painel de contas (308 — leitura permitida)
+
+RESÍDUO PÓS-PROVAS (verificado): 0 contas 'Prova %' · 308 contas intactas ·
+lote 36c6330a intacto (importado_nao_reconciliado) · 5 fixtures (auth+membership+profile)
+==================================================================
+VEREDITO: 10/10 ok — matriz M1–M5 protegida server-side; interface (F1-T08)
+não pode se apoiar em ocultação client-side (RN-142/RN-144, CA-1-09).

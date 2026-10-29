@@ -1,0 +1,23 @@
+# Estado atual — Adapta Cliente
+
+- schema_version: adapta-cliente-state/v3
+- task_id: nenhuma
+- executor: Ethos (Mira)
+- owner_informativo: Ethos
+- spec: nenhuma
+- analise: nenhuma
+- etapa: aguardando_teste_humano
+- autorizacao_implementacao: confirmada pelo pedido de 2026-10-29 15:09 ("faça a fase inteira... Não peça autorização entre as tasks")
+- aguardando_teste: F2-T01 (SPEC-2-000), F2-T02 (SPEC-2-001), F2-T03 (SPEC-2-002), F2-T04 (SPEC-2-003)
+- em_espera: DADO-SV — CNPJs de 20 contas do ICP (2-001); pesos reais do ICP v1 (2-002); aprovação da primeira coorte real (2-003)
+- teste_humano: pendente (F2-T01 aprovado em 29/10; F2-T02, F2-T03 e F2-T04 aguardando)
+- verificacao_automatica: passou — F2-T02 GREEN 5/5; F2-T03 CA-2-07/CA-2-08; F2-T04 12/12 no banco; QA Skip verde nas três; telas /pesquisa, /pontuacao e /lista verificadas no ar com login real (308 linhas renderizadas)
+- aprendizado: pendente
+- sistema: 05_entregas/sv-digital-app (Skip 61901)
+- skip_projeto: 61901
+- skip_versao: 90f714e
+- skip_publicacao: publicada:90f714e em 2026-10-29T18:52:07Z
+- pendente_github: nao
+- ultima_acao: F2-T04 construída, publicada e provada; FASE 2 COMPLETA (4/4 tasks construídas)
+- proxima_acao: colher o teste do cliente das SPECs 2-001, 2-002 e 2-003
+- atualizado_em: 2026-10-29T15:55:00-03:00
