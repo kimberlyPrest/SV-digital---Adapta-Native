@@ -1,0 +1,16 @@
+=== F2-T02 RED — 2026-10-29 (SPEC-2-001) ===
+Consulta ao banco (Supabase wwdwaaerurtabobcsppb) ANTES da migração:
+
+  research_jobs            -> null  (tabela não existe)
+  evidences                -> null  (tabela não existe)
+  accounts.research_status -> false (coluna não existe)
+  contacts.released        -> false (coluna não existe)
+  record_evidence()        -> false (função não existe)
+
+Consequência nas asserções do TDD da SPEC ("falham sem tabelas e regras"):
+- CA-2-01 evidência com proveniência .......... ERRO 42P01 relação inexistente
+- CA-2-02 conta em pesquisa_necessaria ....... ERRO 42703 coluna inexistente
+- CA-2-03 contato sensível invisível .......... ERRO 42P01 relação inexistente
+- CA-2-04 idempotência de job/evidência ....... ERRO 42P01 relação inexistente
+
+RED confirmado. Nenhuma alteração feita no banco.
